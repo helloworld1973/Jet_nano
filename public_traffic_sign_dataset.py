@@ -39,19 +39,18 @@ def read_image(img_path, resize=False):
 
 
 x = np.asarray([read_image(image_path) for image_path in image_paths])
-x.shape
 
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.25)
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.25, stratify=y)
 
 x_train_fd = []
 x_test_fd = []
 
 for image in x_train:
-    x_train_fd.append(image)
+    x_train_fd.append(image.ravel().tolist())
     # x_train_fd.append(hog(image, orientations=8, pixels_per_cell=(4, 4),cells_per_block=(1, 1), visualize=False))
 
 for image in x_test:
-    x_test_fd.append(image)
+    x_test_fd.append(image.ravel().tolist())
     # x_test_fd.append(hog(image, orientations=8, pixels_per_cell=(4, 4),cells_per_block=(1, 1), visualize=False))
 x_train_fd = np.asarray(x_train_fd)
 x_test_fd = np.asarray(x_test_fd)
@@ -59,4 +58,5 @@ print(x_train_fd.shape)
 print(x_test_fd.shape)
 clf = SVC()
 clf.fit(x_train_fd, y_train)
-print("Accuracy of the SVM Classifier is: {}%".format(round(clf.score(x_test_fd, y_test), 2)))
+a = clf.score(x_test_fd, y_test)
+print("Accuracy of the SVM Classifier is: {}%".format(round(a, 2)))
