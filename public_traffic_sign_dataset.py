@@ -6,7 +6,6 @@ from matplotlib import pyplot as plt
 import numpy as np
 from PIL import Image
 
-
 from glob import glob
 
 image_paths = []
@@ -48,12 +47,12 @@ x_train_fd = []
 x_test_fd = []
 
 for image in x_train:
-    x_train_fd.append(hog(image, orientations=8, pixels_per_cell=(4, 4),
-                          cells_per_block=(1, 1), visualize=False))
+    x_train_fd.append(image)
+    # x_train_fd.append(hog(image, orientations=8, pixels_per_cell=(4, 4),cells_per_block=(1, 1), visualize=False))
 
 for image in x_test:
-    x_test_fd.append(hog(image, orientations=8, pixels_per_cell=(4, 4),
-                         cells_per_block=(1, 1), visualize=False))
+    x_test_fd.append(image)
+    # x_test_fd.append(hog(image, orientations=8, pixels_per_cell=(4, 4),cells_per_block=(1, 1), visualize=False))
 x_train_fd = np.asarray(x_train_fd)
 x_test_fd = np.asarray(x_test_fd)
 print(x_train_fd.shape)
