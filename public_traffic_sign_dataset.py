@@ -1,4 +1,5 @@
 from skimage.feature import hog
+from sklearn.neural_network import MLPClassifier
 from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix
@@ -6,7 +7,8 @@ from matplotlib import pyplot as plt
 import numpy as np
 from PIL import Image
 from glob import glob
-
+import time
+from sklearn.metrics import classification_report
 
 image_paths = []
 y = []
@@ -46,18 +48,37 @@ x_train_fd = []
 x_test_fd = []
 
 for image in x_train:
-    x_train_fd.append(image.ravel().tolist())
-    # x_train_fd.append(hog(image, orientations=8, pixels_per_cell=(4, 4),cells_per_block=(1, 1), visualize=False))
+    # x_train_fd.append(image.ravel().tolist())
+    x_train_fd.append(hog(image, orientations=8, pixels_per_cell=(4, 4), cells_per_block=(1, 1), visualize=False))
 
 for image in x_test:
-    x_test_fd.append(image.ravel().tolist())
-    # x_test_fd.append(hog(image, orientations=8, pixels_per_cell=(4, 4),cells_per_block=(1, 1), visualize=False))
+    # x_test_fd.append(image.ravel().tolist())
+    x_test_fd.append(hog(image, orientations=8, pixels_per_cell=(4, 4), cells_per_block=(1, 1), visualize=False))
 
 x_train_fd = np.asarray(x_train_fd)
 x_test_fd = np.asarray(x_test_fd)
 print(x_train_fd.shape)
 print(x_test_fd.shape)
-clf = SVC()
-clf.fit(x_train_fd, y_train)
-a = clf.score(x_test_fd, y_test)
-print("Accuracy of the SVM Classifier is: {}%".format(round(a, 2)))
+
+# SVM
+before_SVM_time = int(round(time.time() * 1000))
+clf_SVM = SVC()
+clf_SVM.fit(x_train_fd, y_train)
+SVM_predicted_y = clf_SVM.predict(x_test_fd)
+after_SVM_time = int(round(time.time() * 1000))
+
+# MLP
+before_MLP_time = int(round(time.time() * 1000))
+model = MLPClassifier(random_state=1, learning_rate_init=0.0001, max_iter=100000)
+model.fit(x_train_fd, y_train)
+print("Model Fitted")
+MLP_predicted_y = model.predict(x_test_fd)
+after_MLP_time = int(round(time.time() * 1000))
+
+# Evaluate model performance
+print('MLP:')
+print('time:' + str(after_MLP_time - before_MLP_time))
+print(classification_report(y_test, MLP_predicted_y))
+print('SVM:')
+print('time:' + str(after_SVM_time - before_SVM_time))
+print(classification_report(y_test, SVM_predicted_y))

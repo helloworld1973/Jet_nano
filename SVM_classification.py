@@ -26,11 +26,14 @@ for file_name in onlyfiles:
     a_image = a_image.convert('RGBA')
     arr = np.array(a_image)[:, :, 0:3]
 
-    flat_arr = arr.ravel().tolist()
-    X.append(flat_arr)
+    #flat_arr = arr.ravel().tolist()
+    #X.append(flat_arr)
     #
-    #hog_features = hog(arr, orientations=8, pixels_per_cell=(4, 4),cells_per_block=(1, 1), visualize=False)
-    #X.append(hog_features)
+    hog_features = hog(arr, orientations=8, pixels_per_cell=(4, 4),cells_per_block=(1, 1), visualize=False)
+    #flat_arr = hog_features.ravel().tolist()
+    #flat_arr = np.array(flat_arr).reshape(1, -1)
+
+    X.append(hog_features)
     y.append(a_label)
     # print()
 
@@ -38,8 +41,8 @@ X = np.asarray(X)
 
 x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.25, stratify=y)
 
-clf = svm.SVC()
-# clf = svm.SVC(C=1, probability=True)
+#clf = svm.SVC()
+clf = svm.SVC(C=1, probability=True)
 clf.fit(x_train, y_train)
 
 s = dump(clf, 'SVM_classify.joblib')
