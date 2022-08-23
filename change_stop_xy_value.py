@@ -2,7 +2,7 @@ import os
 from os import listdir
 from os.path import isfile, join
 
-mypath = 'E:\\Python Projects\\Jet_nano\\road_following_dataset_xy_stop_2022-08-05_06-13-37\\dataset_xy_stop\\'
+mypath = 'E:\\Python Projects\\Jet_nano\\road_following_dataset_xy_stop_2022-08-23_01-52-11\\dataset_xy_stop\\'
 onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
 for old_name in onlyfiles:
     segments = old_name.split('_')

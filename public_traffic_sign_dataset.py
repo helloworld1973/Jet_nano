@@ -48,12 +48,12 @@ x_train_fd = []
 x_test_fd = []
 
 for image in x_train:
-    # x_train_fd.append(image.ravel().tolist())
-    x_train_fd.append(hog(image, orientations=8, pixels_per_cell=(4, 4), cells_per_block=(1, 1), visualize=False))
+    x_train_fd.append(image.ravel().tolist())
+    # x_train_fd.append(hog(image, orientations=8, pixels_per_cell=(4, 4), cells_per_block=(1, 1), visualize=False))
 
 for image in x_test:
-    # x_test_fd.append(image.ravel().tolist())
-    x_test_fd.append(hog(image, orientations=8, pixels_per_cell=(4, 4), cells_per_block=(1, 1), visualize=False))
+    x_test_fd.append(image.ravel().tolist())
+    # x_test_fd.append(hog(image, orientations=8, pixels_per_cell=(4, 4), cells_per_block=(1, 1), visualize=False))
 
 x_train_fd = np.asarray(x_train_fd)
 x_test_fd = np.asarray(x_test_fd)
@@ -67,6 +67,7 @@ clf_SVM.fit(x_train_fd, y_train)
 SVM_predicted_y = clf_SVM.predict(x_test_fd)
 after_SVM_time = int(round(time.time() * 1000))
 
+'''
 # MLP
 before_MLP_time = int(round(time.time() * 1000))
 model = MLPClassifier(random_state=1, learning_rate_init=0.0001, max_iter=100000)
@@ -82,3 +83,4 @@ print(classification_report(y_test, MLP_predicted_y))
 print('SVM:')
 print('time:' + str(after_SVM_time - before_SVM_time))
 print(classification_report(y_test, SVM_predicted_y))
+'''
